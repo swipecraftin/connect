@@ -1,7 +1,9 @@
 # Connect by Swipecraft
 
 > **Open peer mock interview infrastructure for the world's software engineers.**  
-> 100% Free · Zero Paywalls · Zero Advertisements · Equal Reciprocal Standing
+> 100% Free · Zero Paywalls · Zero Advertisements · Equal Reciprocal Standing  
+> 
+> 🌐 **Live Platform:** [connect.swipecraft.in](https://connect.swipecraft.in) · **Edge Backup:** [peermock-web-ck9.pages.dev](https://peermock-web-ck9.pages.dev)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![React 19](https://img.shields.io/badge/React-19-61dafb.svg?logo=react)](https://react.dev)
