@@ -65,24 +65,29 @@ export function useAuth() {
 
     let profileChannel: any = null;
     if (isSupabaseConfigured) {
-      profileChannel = supabase
-        .channel('public:profiles-auth-sync')
-        .on(
-          'postgres_changes',
-          { event: '*', schema: 'public', table: 'profiles' },
-          (payload) => {
-            const updated = payload.new as Profile;
-            if (updated && updated.id) {
-              setProfile((prev) => {
-                if (prev && prev.id === updated.id) {
-                  return { ...prev, ...updated };
-                }
-                return prev;
-              });
+      try {
+        const channelName = `profile-sync-${Math.random().toString(36).substring(2, 9)}`;
+        profileChannel = supabase
+          .channel(channelName)
+          .on(
+            'postgres_changes',
+            { event: '*', schema: 'public', table: 'profiles' },
+            (payload) => {
+              const updated = payload.new as Profile;
+              if (updated && updated.id) {
+                setProfile((prev) => {
+                  if (prev && prev.id === updated.id) {
+                    return { ...prev, ...updated };
+                  }
+                  return prev;
+                });
+              }
             }
-          }
-        )
-        .subscribe();
+          )
+          .subscribe();
+      } catch (err) {
+        console.warn('Realtime profile sync registration warning:', err);
+      }
     }
 
     return () => {
