@@ -1,0 +1,19 @@
+{
+  "name": "peer-mock-platform",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm --workspace=apps/web run dev",
+    "build": "npm --workspace=apps/web run build",
+    "workers:dev": "npm --workspace=packages/workers run dev",
+    "workers:deploy": "npm --workspace=packages/workers run deploy",
+    "pages:deploy": "npx wrangler pages deploy apps/web/dist --project-name peermock-web --branch main",
+    "deploy:all": "npm run build && npm run pages:deploy && npm run workers:deploy"
+  },
+  "devDependencies": {
+    "@cloudflare/mcp-server-cloudflare": "^0.2.0"
+  }
+}

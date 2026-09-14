@@ -1,0 +1,14 @@
+name = "connect-worker"
+main = "src/index.ts"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+[triggers]
+crons = ["*/15 * * * *"]
+
+[vars]
+SUPABASE_URL = "https://your-project-ref.supabase.co"
+RESEND_FROM_EMAIL = "Connect <notifications@yourdomain.com>"
+# Note: Set SUPABASE_SERVICE_ROLE_KEY and RESEND_API_KEY as wrangler secrets:
+# npx wrangler secret put SUPABASE_SERVICE_ROLE_KEY
+# npx wrangler secret put RESEND_API_KEY

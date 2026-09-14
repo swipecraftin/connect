@@ -1,0 +1,154 @@
+@import "@astryxdesign/core/astryx.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scrollbar-gutter: stable;
+  overflow-y: scroll;
+}
+
+@layer base {
+  :root {
+    /* Linear Crisp Light Precision */
+    --background: 210 20% 98%; /* #F8F9FA */
+    --foreground: 220 25% 10%; /* #12151A */
+    --card: 0 0% 100%; /* #FFFFFF */
+    --card-foreground: 220 25% 10%;
+    --primary: 221 83% 53%; /* Linear Electric Blue #2662EA */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 216 16% 93%;
+    --secondary-foreground: 220 25% 10%;
+    --muted: 216 16% 94%;
+    --muted-foreground: 220 10% 46%; /* #6E7681 */
+    --accent: 221 83% 96%;
+    --accent-foreground: 221 83% 53%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 216 16% 89%; /* 1px razor hairline */
+    --input: 216 16% 89%;
+    --ring: 221 83% 53%;
+    --radius: 0.625rem; /* 10px Linear Standard */
+  }
+
+  .dark {
+    /* Nocturne Deep Studio */
+    --background: 228 15% 5%; /* #08090C Pure Deep Nocturne */
+    --foreground: 210 20% 95%; /* #E8EAF0 */
+    --card: 225 14% 8%; /* #0E1015 Elevated Nocturne Surface */
+    --card-foreground: 210 20% 95%;
+    --primary: 217 100% 62%; /* #3E8BFF Nocturne Electric Blue */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 224 10% 14%; /* #12151C */
+    --secondary-foreground: 210 20% 95%;
+    --muted: 224 10% 12%; /* #0B0D12 */
+    --muted-foreground: 218 11% 55%; /* #8A8F9C */
+    --accent: 217 100% 62%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 75% 58%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 12% 16%; /* rgba(255, 255, 255, 0.08) hairline */
+    --input: 220 12% 16%;
+    --ring: 217 100% 62%;
+  }
+}
+
+:root {
+  --accent: #3e8bff;
+  --hair: rgba(255, 255, 255, 0.08);
+  --rim: inset 0 1px 0 rgba(255, 255, 255, 0.045);
+  --muted-text: #8A8F9C;
+  --dim-text: #61666F;
+}
+
+@keyframes pm-press {
+  0% { transform: scale(1); }
+  40% { transform: scale(0.965); }
+  100% { transform: scale(1); }
+}
+
+@keyframes pm-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.animate-pm-press {
+  animation: pm-press 0.18s ease;
+}
+
+.animate-pm-pulse {
+  animation: pm-pulse 2.4s ease-in-out infinite;
+}
+
+.nocturne-glow {
+  background: radial-gradient(900px 420px at 12% -8%, rgba(62, 139, 255, 0.09), transparent 70%), #08090C;
+}
+
+.nocturne-surface {
+  background: #0E1015;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045);
+}
+
+body {
+  font-family: "Google Sans Flex", "Google Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  letter-spacing: -0.012em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code, pre, .font-mono, kbd {
+  font-family: "Google Sans Code", "JetBrains Mono", "SF Mono", Consolas, monospace;
+}
+
+/* Linear-style subtle rim light and card glass */
+.linear-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035) 0%, rgba(255, 255, 255, 0.005) 100%), hsl(var(--card));
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+}
+
+.linear-card-hover {
+  transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.linear-card-hover:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.14), 0 4px 16px -2px rgba(0, 0, 0, 0.5);
+  transform: translateY(-1px);
+}
+
+/* Linear keyboard shortcut badge */
+kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 2px 5px;
+  border-radius: 4px;
+  background: hsl(var(--secondary) / 0.8);
+  border: 1px solid hsl(var(--border) / 0.9);
+  color: hsl(var(--muted-foreground));
+  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Custom minimal scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(133, 141, 152, 0.2);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(133, 141, 152, 0.35);
+}

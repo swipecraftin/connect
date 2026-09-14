@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/nocturne-99fb6b03-dc71-4dd4-b306-c4cfd8d7a8f6/styles.css">
+<script src="_ds/nocturne-99fb6b03-dc71-4dd4-b306-c4cfd8d7a8f6/_ds_bundle.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --accent:#3e8bff;
+  --color-bg:#08090C; --color-surface:#0E1015; --color-text:#E8EAF0;
+  --color-accent:var(--accent); --color-divider:rgba(255,255,255,0.08);
+  --font-heading:"Plus Jakarta Sans",system-ui,sans-serif;
+  --font-body:"Plus Jakarta Sans",system-ui,sans-serif;
+  --font-heading-weight:600;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --hair:rgba(255,255,255,0.08);
+  --rim:inset 0 1px 0 rgba(255,255,255,0.045);
+  --muted:#8A8F9C; --dim:#61666F;
+}
+body{margin:0;background:#08090C;color:#E8EAF0;font-family:var(--font-body);-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
+a:hover{color:#8fb6ff}
+::selection{background:rgba(62,139,255,.28)}
+@keyframes pm-press{0%{transform:scale(1)}40%{transform:scale(.965)}100%{transform:scale(1)}}
+@keyframes pm-pulse{0%,100%{opacity:1}50%{opacity:.35}}
+</style>
+</helmet>
+<div style="--accent:{{ accent }};min-height:100vh;background:radial-gradient(900px 420px at 12% -8%, rgba(62,139,255,0.09), transparent 70%),#08090C;font-family:var(--font-body)">
+
+  <header style="position:sticky;top:0;z-index:20;backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);background:rgba(8,9,12,0.72);border-bottom:1px solid var(--hair)">
+    <div style="max-width:1320px;margin:0 auto;padding:0 24px;height:56px;display:flex;align-items:center;gap:26px">
+      <div style="display:flex;align-items:center;gap:9px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="filter:drop-shadow(0 0 7px color-mix(in srgb, var(--accent) 55%, transparent))"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" fill="var(--accent)"></path></svg>
+        <span style="font-weight:800;font-size:15.5px;letter-spacing:-0.025em">PeerMock</span>
+      </div>
+
+      <nav style="display:flex;align-items:center;gap:2px;padding:3px;border:1px solid var(--hair);border-radius:9px;background:#0C0E13">
+        <button onClick="{{ goMarket }}" style="display:flex;align-items:center;gap:7px;padding:5px 11px;border:0;border-radius:6px;font-family:var(--font-body);font-size:13px;font-weight:500;cursor:pointer;background:{{ tabBgMarket }};color:{{ tabFgMarket }}" style-hover="filter:brightness(1.35)">Marketplace<span style="font-family:var(--mono);font-size:9.5px;padding:1px 4px;border-radius:3px;border:1px solid var(--hair);color:var(--dim)">1</span></button>
+        <button onClick="{{ goSessions }}" style="display:flex;align-items:center;gap:7px;padding:5px 11px;border:0;border-radius:6px;font-family:var(--font-body);font-size:13px;font-weight:500;cursor:pointer;background:{{ tabBgSessions }};color:{{ tabFgSessions }}" style-hover="filter:brightness(1.35)">My Sessions<span style="font-family:var(--mono);font-size:9.5px;padding:1px 4px;border-radius:3px;border:1px solid var(--hair);color:var(--dim)">2</span></button>
+        <button onClick="{{ goProfile }}" style="display:flex;align-items:center;gap:7px;padding:5px 11px;border:0;border-radius:6px;font-family:var(--font-body);font-size:13px;font-weight:500;cursor:pointer;background:{{ tabBgProfile }};color:{{ tabFgProfile }}" style-hover="filter:brightness(1.35)">Profile<span style="font-family:var(--mono);font-size:9.5px;padding:1px 4px;border-radius:3px;border:1px solid var(--hair);color:var(--dim)">3</span></button>
+      </nav>
+
+      <div style="flex:1"></div>
+
+      <div style="display:flex;align-items:center;gap:8px;padding:4px 10px 4px 8px;border:1px solid var(--hair);border-radius:20px;background:#0C0E13">
+        <span style="width:6px;height:6px;border-radius:50%;background:#34D399;box-shadow:0 0 8px rgba(52,211,153,.7);animation:pm-pulse 2.4s ease-in-out infinite"></span>
+        <span style="font-family:var(--mono);font-size:11px;color:#CDD2DC">{{ online }}</span>
+        <span style="font-size:11.5px;color:var(--muted)">peers online</span>
+      </div>
+
+      <button onClick="{{ openNew }}" style="display:flex;align-items:center;gap:8px;padding:6px 11px;border:1px solid color-mix(in srgb, var(--accent) 45%, transparent);border-radius:8px;background:color-mix(in srgb, var(--accent) 10%, transparent);color:#cfe0ff;font-family:var(--font-body);font-size:13px;font-weight:600;cursor:pointer" style-hover="background:color-mix(in srgb, var(--accent) 18%, transparent)" style-active="animation:pm-press .18s ease">Post a slot<span style="font-family:var(--mono);font-size:9.5px;padding:1px 4px;border-radius:3px;border:1px solid color-mix(in srgb, var(--accent) 40%, transparent);color:#9cc0ff">N</span></button>
+
+      <div style="width:29px;height:29px;border-radius:50%;border:1px solid var(--hair);background:linear-gradient(145deg,#1d2333,#0f1219);display:grid;place-items:center;font-family:var(--mono);font-size:10.5px;color:#AEB5C2">RK</div>
+    </div>
+  </header>
+
+  <main style="max-width:1320px;margin:0 auto;padding:26px 24px 104px;display:flex;flex-direction:column;gap:22px">
+
+    <sc-if value="{{ isMarket }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-direction:column;gap:22px">
+
+        <section style="position:relative;overflow:hidden;padding:24px 0 30px;border:0;background:transparent">
+          <div style="position:absolute;top:-60px;right:-40px;width:380px;height:260px;background:radial-gradient(closest-side, color-mix(in srgb, var(--accent) 22%, transparent), transparent);pointer-events:none"></div>
+          <div style="position:relative;display:flex;flex-direction:column;gap:16px;max-width:760px">
+            <span style="display:inline-flex;align-items:center;gap:8px;align-self:flex-start;padding:5px 12px;border:1px solid color-mix(in srgb, var(--accent) 38%, transparent);border-radius:20px;background:color-mix(in srgb, var(--accent) 9%, transparent);font-family:var(--mono);font-size:10.5px;letter-spacing:0.04em;color:#a9c8ff;text-transform:uppercase">
+              <span style="width:5px;height:5px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)"></span>100% Free Peer Mock Practice • Zero Platform Fees
+            </span>
+            <h1 style="margin:0;font-family:var(--font-heading);font-weight:700;font-size:42px;line-height:1.04;letter-spacing:-0.035em;color:#F2F4F8;text-wrap:pretty">Interview someone. Get interviewed back.<br><span style="color:#7C8391">Reciprocity is the only currency.</span></h1>
+            <p style="margin:0;font-size:14.5px;line-height:1.6;color:var(--muted);max-width:600px">Every slot on PeerMock is posted by a peer who wants one in return. Book in one keystroke, meet on Google Meet for 45 minutes, and leave structured feedback that builds both your karma scores.</p>
+            <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;padding-top:6px">
+              <div style="display:flex;align-items:baseline;gap:7px"><span style="font-family:var(--mono);font-size:19px;font-weight:600;color:#E8EAF0;font-variant-numeric:tabular-nums">{{ mocks }}</span><span style="font-size:12px;color:var(--dim)">mocks this week</span></div>
+              <span style="width:1px;height:22px;background:var(--hair)"></span>
+              <div style="display:flex;align-items:baseline;gap:7px"><span style="font-family:var(--mono);font-size:19px;font-weight:600;color:#E8EAF0">128</span><span style="font-size:12px;color:var(--dim)">slots open today</span></div>
+              <span style="width:1px;height:22px;background:var(--hair)"></span>
+              <div style="display:flex;align-items:baseline;gap:7px"><span style="font-family:var(--mono);font-size:19px;font-weight:600;color:#34D399">2m 14s</span><span style="font-size:12px;color:var(--dim)">median time to match</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section style="display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+            <div style="display:inline-flex;gap:3px;padding:3px;border:1px solid var(--hair);border-radius:11px;background:#0C0E13;box-shadow:var(--rim)">
+              <button onClick="{{ setGive }}" style="display:flex;align-items:center;gap:9px;padding:7px 12px;border:1px solid {{ giveBc }};border-radius:8px;font-family:var(--font-body);font-size:12.5px;font-weight:600;cursor:pointer;background:{{ postureBgGive }};color:{{ postureFgGive }};box-shadow:{{ giveShadow }}" style-hover="filter:brightness(1.2)" style-active="animation:pm-press .18s ease">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="{{ giveIcon }}" stroke-width="1.9" stroke-linecap="round"><path d="M4 19c1.6-3.6 4.4-5.4 8-5.4s6.4 1.8 8 5.4"></path><circle cx="12" cy="8" r="3.6"></circle></svg>
+                Available Evaluators
+                <span style="font-weight:400;color:var(--dim)">Giving Interview</span>
+                <span style="font-family:var(--mono);font-size:10px;padding:1px 6px;border-radius:10px;border:1px solid {{ giveBadgeBc }};background:{{ giveBadgeBg }};color:{{ giveBadgeFg }}">{{ giveCount }}</span>
+              </button>
+              <button onClick="{{ setSeek }}" style="display:flex;align-items:center;gap:9px;padding:7px 12px;border:1px solid {{ seekBc }};border-radius:8px;font-family:var(--font-body);font-size:12.5px;font-weight:600;cursor:pointer;background:{{ postureBgSeek }};color:{{ postureFgSeek }};box-shadow:{{ seekShadow }}" style-hover="filter:brightness(1.2)" style-active="animation:pm-press .18s ease">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="{{ seekIcon }}" stroke-width="1.9" stroke-linecap="round"><path d="M12 4v12"></path><path d="m7 11 5 5 5-5"></path><path d="M4 20h16"></path></svg>
+                Practice Requests
+                <span style="font-weight:400;color:var(--dim)">Seeking Interview</span>
+                <span style="font-family:var(--mono);font-size:10px;padding:1px 6px;border-radius:10px;border:1px solid {{ seekBadgeBc }};background:{{ seekBadgeBg }};color:{{ seekBadgeFg }}">{{ seekCount }}</span>
+              </button>
+            </div>
+
+            <div style="flex:1;min-width:180px;position:relative;display:flex;align-items:center">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#61666F" stroke-width="2" style="position:absolute;left:10px"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+              <input ref="{{ searchRef }}" value="{{ query }}" onChange="{{ onQuery }}" placeholder="Search peers, skills, companies" style="width:100%;height:34px;padding:0 42px 0 30px;border:1px solid var(--hair);border-radius:8px;background:#0C0E13;color:#E8EAF0;font-family:var(--font-body);font-size:13px;outline:none" style-focus="border-color:color-mix(in srgb, var(--accent) 60%, transparent)">
+              <span style="position:absolute;right:9px;font-family:var(--mono);font-size:10px;padding:2px 6px;border-radius:4px;border:1px solid var(--hair);color:var(--dim)">/</span>
+            </div>
+
+            <div style="display:inline-flex;padding:3px;border:1px solid var(--hair);border-radius:9px;background:#0C0E13">
+              <button onClick="{{ setCards }}" title="Social cards" style="display:grid;place-items:center;width:30px;height:26px;border:0;border-radius:6px;cursor:pointer;background:{{ densBgCards }};color:{{ densFgCards }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg></button>
+              <button onClick="{{ setList }}" title="High-density list" style="display:grid;place-items:center;width:30px;height:26px;border:0;border-radius:6px;cursor:pointer;background:{{ densBgList }};color:{{ densFgList }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"></path></svg></button>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:7px;overflow-x:auto;padding-bottom:2px">
+            <sc-for list="{{ domains }}" as="d" hint-placeholder-count="7">
+              <button onClick="{{ d.pick }}" style="flex:none;padding:5px 12px;border:1px solid {{ d.bc }};border-radius:16px;background:{{ d.bg }};color:{{ d.fg }};font-family:var(--font-body);font-size:12.5px;font-weight:500;cursor:pointer;white-space:nowrap" style-hover="border-color:rgba(255,255,255,0.18)">{{ d.label }}<span style="font-family:var(--mono);font-size:10px;margin-left:7px;color:var(--dim)">{{ d.count }}</span></button>
+            </sc-for>
+          </div>
+        </section>
+
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px">
+          <div style="display:flex;align-items:baseline;gap:9px"><h2 style="margin:0;font-family:var(--font-heading);font-weight:600;font-size:16px;letter-spacing:-0.02em;color:#E8EAF0">{{ listTitle }}</h2><span style="font-family:var(--mono);font-size:11px;color:var(--dim)">{{ countLabel }}</span></div>
+          <span style="font-size:11.5px;color:var(--dim)">Sorted by reliability · karma balance</span>
+        </div>
+
+        <sc-if value="{{ isCards }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px">
+            <sc-for list="{{ slots }}" as="s" hint-placeholder-count="6">
+              <article onClick="{{ s.select }}" style="display:flex;flex-direction:column;gap:13px;padding:16px;border:1px solid {{ s.bc }};border-radius:14px;background:#0E1015;box-shadow:{{ s.shadow }};cursor:pointer;animation:{{ s.anim }}" style-hover="border-color:rgba(255,255,255,0.16)">
+                <div style="display:flex;align-items:flex-start;gap:11px">
+                  <div style="position:relative;flex:none">
+                    <div style="width:38px;height:38px;border-radius:50%;border:1px solid var(--hair);background:linear-gradient(145deg,#1e2434,#0f1219);display:grid;place-items:center;font-family:var(--mono);font-size:11.5px;color:#B6BDC9">{{ s.initials }}</div>
+                    <span style="position:absolute;right:-1px;bottom:-1px;width:10px;height:10px;border-radius:50%;background:#34D399;border:2px solid #0E1015"></span>
+                  </div>
+                  <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                    <div style="display:flex;align-items:center;gap:5px">
+                      <span style="font-size:13.5px;font-weight:600;color:#EDEFF4">{{ s.name }}</span>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--accent)"><path d="M12 2l2.2 1.6 2.7-.3 1 2.5 2.3 1.4-.6 2.6.6 2.6-2.3 1.4-1 2.5-2.7-.3L12 22l-2.2-1.6-2.7.3-1-2.5L3.8 16.8l.6-2.6-.6-2.6 2.3-1.4 1-2.5 2.7.3L12 2Z" opacity=".22"></path><path d="M8.2 12.3l2.4 2.4 5-5" stroke="var(--accent)" stroke-width="2" fill="none" stroke-linecap="round"></path></svg>
+                    </div>
+                    <span style="font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.role }}</span>
+                  </div>
+                  <span style="flex:none;font-family:var(--mono);font-size:10px;padding:3px 7px;border-radius:5px;border:1px solid var(--hair);color:#9AA1AE">★ {{ s.karma }}</span>
+                </div>
+
+                <p style="margin:0;font-size:13.5px;line-height:1.45;color:#C6CBD5;text-wrap:pretty">{{ s.headline }}</p>
+
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                  <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border-radius:6px;background:rgba(52,211,153,.09);border:1px solid rgba(52,211,153,.22)">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="2"><path d="M12 3l7 2.5v5.5c0 4.2-2.9 8-7 10-4.1-2-7-5.8-7-10V5.5L12 3Z"></path></svg>
+                    <span style="font-family:var(--mono);font-size:10.5px;color:#6EE7B7">{{ s.rel }}% reliable</span>
+                  </span>
+                  <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border-radius:6px;border:1px solid var(--hair);background:#0B0D12">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#8A8F9C" stroke-width="1.8"><rect x="2.5" y="6" width="13" height="12" rx="2"></rect><path d="M15.5 11l6-3.5v9L15.5 13"></path></svg>
+                    <span style="font-family:var(--mono);font-size:10.5px;color:#AEB5C2">45 min · {{ s.when }}</span>
+                  </span>
+                </div>
+
+                <div style="display:flex;gap:6px;flex-wrap:wrap">
+                  <sc-for list="{{ s.tags }}" as="t" hint-placeholder-count="3">
+                    <span style="font-size:11px;padding:3px 9px;border-radius:6px;background:#151922;color:#9FA6B3;border:1px solid rgba(255,255,255,0.05)">{{ t }}</span>
+                  </sc-for>
+                </div>
+
+                <div style="display:flex;align-items:center;gap:8px;margin-top:auto;padding-top:3px">
+                  <button onClick="{{ s.book }}" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;height:34px;border:1px solid {{ s.ctaBorder }};border-radius:8px;background:{{ s.ctaBg }};color:{{ s.ctaFg }};font-family:var(--font-body);font-size:13px;font-weight:600;cursor:pointer" style-hover="filter:brightness(1.2)" style-active="animation:pm-press .18s ease">{{ s.cta }}</button>
+                  <span style="font-family:var(--mono);font-size:10px;padding:4px 7px;border-radius:5px;border:1px solid var(--hair);color:var(--dim)">B</span>
+                </div>
+              </article>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isList }}" hint-placeholder-val="{{ false }}">
+          <div style="border:1px solid var(--hair);border-radius:12px;background:#0E1015;box-shadow:var(--rim);overflow:hidden">
+            <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1.7fr) 92px 128px 78px 104px;gap:14px;padding:9px 16px;border-bottom:1px solid var(--hair);background:#0B0D12;font-family:var(--mono);font-size:9.5px;letter-spacing:0.09em;text-transform:uppercase;color:#5F6570">
+              <span>Peer</span><span>Focus</span><span>Reliability</span><span>Slot</span><span>Karma</span><span style="text-align:right">Action</span>
+            </div>
+            <sc-for list="{{ slots }}" as="s" hint-placeholder-count="8">
+              <div onClick="{{ s.select }}" style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1.7fr) 92px 128px 78px 104px;gap:14px;align-items:center;padding:8px 16px;border-bottom:1px solid rgba(255,255,255,0.045);background:{{ s.rowBg }};box-shadow:{{ s.rowRail }};cursor:pointer;animation:{{ s.anim }}" style-hover="background:rgba(255,255,255,0.028)">
+                <div style="display:flex;align-items:center;gap:9px;min-width:0">
+                  <span style="position:relative;flex:none;width:22px;height:22px;border-radius:50%;border:1px solid var(--hair);background:linear-gradient(145deg,#1e2434,#0f1219);display:grid;place-items:center;font-family:var(--mono);font-size:8.5px;color:#B6BDC9">{{ s.initials }}<span style="position:absolute;right:-1px;bottom:-1px;width:7px;height:7px;border-radius:50%;background:#34D399;border:1.5px solid #0E1015"></span></span>
+                  <span style="font-size:12.5px;font-weight:600;color:#E8EAF0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.name }}</span>
+                  <span style="font-size:11px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.company }}</span>
+                </div>
+                <span style="font-size:12.5px;color:#B8BEC9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.headline }}</span>
+                <span style="font-family:var(--mono);font-size:11px;color:#6EE7B7">{{ s.rel }}%</span>
+                <span style="font-family:var(--mono);font-size:11px;color:#AEB5C2">{{ s.when }}</span>
+                <span style="font-family:var(--mono);font-size:11px;color:#9AA1AE">★ {{ s.karma }}</span>
+                <button onClick="{{ s.book }}" style="justify-self:end;height:26px;padding:0 11px;border:1px solid {{ s.ctaBorder }};border-radius:6px;background:{{ s.ctaBg }};color:{{ s.ctaFg }};font-family:var(--font-body);font-size:11.5px;font-weight:600;cursor:pointer;white-space:nowrap" style-active="animation:pm-press .18s ease">{{ s.ctaShort }}</button>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isSessions }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;align-items:baseline;gap:10px"><h2 style="margin:0;font-family:var(--font-heading);font-weight:600;font-size:20px;letter-spacing:-0.025em">My Sessions</h2><span style="font-family:var(--mono);font-size:11px;color:var(--dim)">4 scheduled · 2 awaiting feedback</span></div>
+        <div style="border:1px solid var(--hair);border-radius:12px;background:#0E1015;box-shadow:var(--rim);overflow:hidden">
+          <div style="display:grid;grid-template-columns:150px minmax(180px,1fr) 120px minmax(140px,1fr) 130px;gap:14px;padding:9px 16px;border-bottom:1px solid var(--hair);background:#0B0D12;font-family:var(--mono);font-size:9.5px;letter-spacing:0.09em;text-transform:uppercase;color:#5F6570">
+            <span>When</span><span>Peer</span><span>My Role</span><span>Focus</span><span style="text-align:right">Status</span>
+          </div>
+          <sc-for list="{{ sessions }}" as="x" hint-placeholder-count="4">
+            <div style="display:grid;grid-template-columns:150px minmax(180px,1fr) 120px minmax(140px,1fr) 130px;gap:14px;align-items:center;padding:10px 16px;border-bottom:1px solid rgba(255,255,255,0.045)" style-hover="background:rgba(255,255,255,0.028)">
+              <span style="font-family:var(--mono);font-size:11.5px;color:#C6CBD5">{{ x.when }}</span>
+              <span style="font-size:12.5px;color:#E8EAF0">{{ x.peer }}</span>
+              <span style="font-size:12px;color:{{ x.roleFg }}">{{ x.role }}</span>
+              <span style="font-size:12.5px;color:#9FA6B3">{{ x.focus }}</span>
+              <span style="justify-self:end;font-family:var(--mono);font-size:10.5px;padding:3px 9px;border-radius:5px;border:1px solid {{ x.statusBc }};background:{{ x.statusBg }};color:{{ x.statusFg }}">{{ x.status }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isProfile }}" hint-placeholder-val="{{ false }}">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;align-items:start">
+        <section style="display:flex;flex-direction:column;gap:16px;padding:20px;border:1px solid var(--hair);border-radius:14px;background:#0E1015;box-shadow:var(--rim)">
+          <div style="display:flex;align-items:center;gap:13px">
+            <div style="width:52px;height:52px;border-radius:50%;border:1px solid var(--hair);background:linear-gradient(145deg,#1e2434,#0f1219);display:grid;place-items:center;font-family:var(--mono);font-size:15px;color:#B6BDC9">RK</div>
+            <div style="display:flex;flex-direction:column;gap:3px">
+              <span style="font-size:16px;font-weight:700;letter-spacing:-0.02em">Rohit Kulkarni</span>
+              <span style="font-size:12px;color:var(--muted)">SDE-2 · Bengaluru · IST (UTC+5:30)</span>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+            <div style="display:flex;flex-direction:column;gap:3px;padding:11px;border:1px solid var(--hair);border-radius:9px;background:#0B0D12"><span style="font-family:var(--mono);font-size:17px;color:#E8EAF0">1,420</span><span style="font-size:10.5px;color:var(--dim)">karma</span></div>
+            <div style="display:flex;flex-direction:column;gap:3px;padding:11px;border:1px solid var(--hair);border-radius:9px;background:#0B0D12"><span style="font-family:var(--mono);font-size:17px;color:#6EE7B7">99%</span><span style="font-size:10.5px;color:var(--dim)">reliability</span></div>
+            <div style="display:flex;flex-direction:column;gap:3px;padding:11px;border:1px solid var(--hair);border-radius:9px;background:#0B0D12"><span style="font-family:var(--mono);font-size:17px;color:#E8EAF0">84</span><span style="font-size:10.5px;color:var(--dim)">mocks</span></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted)"><span>Reciprocity balance</span><span style="font-family:var(--mono);color:#C6CBD5">46 given · 38 taken</span></div>
+            <div style="height:5px;border-radius:3px;background:#151922;overflow:hidden"><div style="width:55%;height:100%;background:linear-gradient(90deg,var(--accent),#34D399)"></div></div>
+            <span style="font-size:11px;color:var(--dim)">Giving more than you take keeps priority placement in the marketplace.</span>
+          </div>
+        </section>
+
+        <section style="display:flex;flex-direction:column;gap:12px;padding:20px;border:1px solid var(--hair);border-radius:14px;background:#0E1015;box-shadow:var(--rim)">
+          <span style="font-family:var(--mono);font-size:9.5px;letter-spacing:0.09em;text-transform:uppercase;color:#5F6570">Evaluates</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span style="font-size:11.5px;padding:4px 10px;border-radius:6px;background:#151922;color:#9FA6B3;border:1px solid rgba(255,255,255,0.05)">Systems Design</span>
+            <span style="font-size:11.5px;padding:4px 10px;border-radius:6px;background:#151922;color:#9FA6B3;border:1px solid rgba(255,255,255,0.05)">Backend</span>
+            <span style="font-size:11.5px;padding:4px 10px;border-radius:6px;background:#151922;color:#9FA6B3;border:1px solid rgba(255,255,255,0.05)">Distributed Systems</span>
+            <span style="font-size:11.5px;padding:4px 10px;border-radius:6px;background:#151922;color:#9FA6B3;border:1px solid rgba(255,255,255,0.05)">DSA</span>
+          </div>
+          <span style="font-family:var(--mono);font-size:9.5px;letter-spacing:0.09em;text-transform:uppercase;color:#5F6570;margin-top:6px">Recent peer feedback</span>
+          <p style="margin:0;font-size:13px;line-height:1.5;color:#C6CBD5;border-left:2px solid color-mix(in srgb, var(--accent) 55%, transparent);padding-left:11px">Pushed hard on capacity estimates and caught a single point of failure I had missed. Notes arrived within ten minutes.</p>
+          <p style="margin:0;font-size:13px;line-height:1.5;color:#C6CBD5;border-left:2px solid color-mix(in srgb, var(--accent) 55%, transparent);padding-left:11px">Kept the loop to time and scored against a rubric instead of vibes.</p>
+        </section>
+      </div>
+    </sc-if>
+  </main>
+
+  <div style="position:fixed;left:0;right:0;bottom:0;z-index:15;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);background:rgba(8,9,12,0.78);border-top:1px solid var(--hair);display:{{ hintDisplay }}">
+    <div style="max-width:1320px;margin:0 auto;padding:9px 24px;display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+      <span style="font-family:var(--mono);font-size:9.5px;letter-spacing:0.09em;text-transform:uppercase;color:#4E535C">Keyboard</span>
+      <span style="display:inline-flex;align-items:center;gap:7px;font-size:11.5px;color:var(--muted)"><span style="font-family:var(--mono);font-size:10px;padding:2px 6px;border-radius:4px;border:1px solid var(--hair);color:#AEB5C2">/</span>search</span>
+      <span style="display:inline-flex;align-items:center;gap:7px;font-size:11.5px;color:var(--muted)"><span style="font-family:var(--mono);font-size:10px;padding:2px 6px;border-radius:4px;border:1px solid var(--hair);color:#AEB5C2">J</span><span style="font-family:var(--mono);font-size:10px;padding:2px 6px;border-radius:4px;border:1px solid var(--hair);color:#AEB5C2">K</span>cycle slots</span>
+      <span style="display:inline-flex;align-items:center;gap:7px;font-size:11.5px;color:var(--muted)"><span style="font-family:var(--mono);font-size:10px;padding:2px 6px;border-radius:4px;border:1px solid color-mix(in srgb, var(--accent) 40%, transparent);color:#9cc0ff">B</span>instant book</span>
+      <span style="display:inline-flex;align-items:center;gap:7px;font-size:11.5px;color:var(--muted)"><span style="font-family:var(--mono);font-size:10px;padding:2px 6px;border-radius:4px;border:1px solid var(--hair);color:#AEB5C2">V</span>toggle density</span>
+      <span style="display:inline-flex;align-items:center;gap:7px;font-size:11.5px;color:var(--muted)"><span style="font-family:var(--mono);font-size:10px;padding:2px 6px;border-radius:4px;border:1px solid var(--hair);color:#AEB5C2">N</span>post a slot</span>
+      <div style="flex:1"></div>
+      <span style="font-family:var(--mono);font-size:10.5px;color:#4E535C">{{ selLabel }}</span>
+    </div>
+  </div>
+
+  <sc-if value="{{ newOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeNew }}" style="position:fixed;inset:0;z-index:40;display:grid;place-items:center;padding:24px;background:rgba(4,5,7,0.72);backdrop-filter:blur(6px)">
+      <div onClick="{{ stop }}" style="width:min(440px,100%);display:flex;flex-direction:column;gap:15px;padding:20px;border:1px solid rgba(255,255,255,0.12);border-radius:14px;background:#0E1015;box-shadow:0 30px 80px rgba(0,0,0,.7),var(--rim)">
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <span style="font-family:var(--font-heading);font-weight:700;font-size:17px;letter-spacing:-0.02em">Post a slot</span>
+          <span style="font-size:12.5px;color:var(--muted)">45 minutes on Google Meet. You commit to interviewing one peer and receive one credit to be interviewed.</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <input placeholder="Headline — e.g. Systems design, ex-AWS depth" style="height:34px;padding:0 11px;border:1px solid var(--hair);border-radius:8px;background:#0B0D12;color:#E8EAF0;font-family:var(--font-body);font-size:13px;outline:none" style-focus="border-color:color-mix(in srgb, var(--accent) 60%, transparent)">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+            <input placeholder="Today, 7:30 PM IST" style="height:34px;padding:0 11px;border:1px solid var(--hair);border-radius:8px;background:#0B0D12;color:#E8EAF0;font-family:var(--mono);font-size:12px;outline:none" style-focus="border-color:color-mix(in srgb, var(--accent) 60%, transparent)">
+            <input placeholder="Skills, comma separated" style="height:34px;padding:0 11px;border:1px solid var(--hair);border-radius:8px;background:#0B0D12;color:#E8EAF0;font-family:var(--font-body);font-size:13px;outline:none" style-focus="border-color:color-mix(in srgb, var(--accent) 60%, transparent)">
+          </div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:8px">
+          <button onClick="{{ closeNew }}" style="height:32px;padding:0 13px;border:1px solid var(--hair);border-radius:8px;background:transparent;color:#C6CBD5;font-family:var(--font-body);font-size:12.5px;font-weight:500;cursor:pointer">Cancel<span style="font-family:var(--mono);font-size:9.5px;margin-left:7px;color:var(--dim)">esc</span></button>
+          <button onClick="{{ closeNew }}" style="height:32px;padding:0 13px;border:1px solid color-mix(in srgb, var(--accent) 55%, transparent);border-radius:8px;background:color-mix(in srgb, var(--accent) 14%, transparent);color:#cfe0ff;font-family:var(--font-body);font-size:12.5px;font-weight:600;cursor:pointer" style-active="animation:pm-press .18s ease">Publish slot</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#7c5cff&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#3e8bff&quot;,&quot;#7c5cff&quot;,&quot;#2dd4bf&quot;,&quot;#f97362&quot;],&quot;section&quot;:&quot;Theme&quot;},&quot;defaultDensity&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;cards&quot;,&quot;options&quot;:[&quot;cards&quot;,&quot;list&quot;],&quot;tsType&quot;:&quot;'cards' | 'list'&quot;,&quot;section&quot;:&quot;Marketplace&quot;},&quot;defaultPosture&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;give&quot;,&quot;options&quot;:[&quot;give&quot;,&quot;seek&quot;],&quot;tsType&quot;:&quot;'give' | 'seek'&quot;,&quot;section&quot;:&quot;Marketplace&quot;},&quot;showShortcutBar&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Marketplace&quot;}}">
+const GIVE = [
+  {id:'g1',name:'Aarav Mehta',company:'Stripe',role:'Senior SWE · Stripe',initials:'AM',headline:'Systems design and backend depth, ex-AWS S3 team',tags:['Systems Design','Backend','Distributed'],rel:99,karma:'1,420',when:'Today 7:30 PM',domain:'Systems Design'},
+  {id:'g2',name:'Lena Fischer',company:'Vercel',role:'Staff Frontend · Vercel',initials:'LF',headline:'React performance and rendering internals',tags:['Frontend','React','Perf'],rel:98,karma:'980',when:'Today 9:00 PM',domain:'Frontend'},
+  {id:'g3',name:'Daniel Okoye',company:'Datadog',role:'Engineering Manager · Datadog',initials:'DO',headline:'Behavioral loops scored against a real rubric',tags:['Behavioral','Leadership'],rel:97,karma:'2,130',when:'Tomorrow 6:00 PM',domain:'Behavioral'},
+  {id:'g4',name:'Priya Raman',company:'Scale AI',role:'ML Engineer · Scale AI',initials:'PR',headline:'Applied ML and ranking system design',tags:['ML','Data','Systems Design'],rel:99,karma:'1,105',when:'Tomorrow 8:15 PM',domain:'ML'},
+  {id:'g5',name:'Marco Silva',company:'Shopify',role:'SWE II · Shopify',initials:'MS',headline:'DSA drills, medium to hard, timed and graded',tags:['DSA','Algorithms'],rel:95,karma:'640',when:'Today 10:00 PM',domain:'DSA'},
+  {id:'g6',name:'Yuki Tanaka',company:'Figma',role:'Principal Engineer · Figma',initials:'YT',headline:'Frontend architecture and design system tradeoffs',tags:['Frontend','Systems Design'],rel:100,karma:'3,020',when:'Sat 11:00 AM',domain:'Frontend'},
+  {id:'g7',name:'Hana Adeyemi',company:'Cloudflare',role:'SRE · Cloudflare',initials:'HA',headline:'Debugging and incident-response interviews',tags:['Backend','Systems Design'],rel:98,karma:'1,760',when:'Sat 4:30 PM',domain:'Backend'},
+  {id:'g8',name:'Ivan Petrov',company:'Snowflake',role:'Data Engineer · Snowflake',initials:'IP',headline:'SQL, modelling and pipeline design rounds',tags:['Data','Backend'],rel:96,karma:'820',when:'Sun 1:00 PM',domain:'Data'}
+];
+const SEEK = [
+  {id:'s1',name:'Sofia Alvarez',company:'New grad',role:'New grad · seeking DSA loop',initials:'SA',headline:'First on-site next week, wants two hard DSA rounds',tags:['DSA','Algorithms'],rel:94,karma:'210',when:'Today 8:00 PM',domain:'DSA'},
+  {id:'s2',name:'Omar Haddad',company:'Klarna',role:'SWE I · Klarna',initials:'OH',headline:'Backend promo prep, wants pushback on API design',tags:['Backend','Systems Design'],rel:97,karma:'560',when:'Tomorrow 7:00 PM',domain:'Backend'},
+  {id:'s3',name:'Grace Lin',company:'Atlassian',role:'Senior SWE · Atlassian',initials:'GL',headline:'L5 behavioral prep, scope and conflict stories',tags:['Behavioral','Leadership'],rel:99,karma:'1,340',when:'Tomorrow 9:30 PM',domain:'Behavioral'},
+  {id:'s4',name:'Tomas Novak',company:'Independent',role:'Contractor · seeking first mock',initials:'TN',headline:'Never done a systems design round, wants the basics stress-tested',tags:['Systems Design'],rel:92,karma:'75',when:'Sat 2:00 PM',domain:'Systems Design'},
+  {id:'s5',name:'Amara Diop',company:'Spotify',role:'Frontend Engineer · Spotify',initials:'AD',headline:'Rendering and state management deep dive wanted',tags:['Frontend','Perf'],rel:98,karma:'910',when:'Sun 11:30 AM',domain:'Frontend'},
+  {id:'s6',name:'Wei Chen',company:'Anduril',role:'ML Engineer · Anduril',initials:'WC',headline:'Ranking and evaluation questions, applied ML focus',tags:['ML','Data'],rel:96,karma:'480',when:'Sun 5:00 PM',domain:'ML'}
+];
+const DOMAINS = ['All','Systems Design','Frontend','Backend','DSA','Behavioral','ML','Data'];
+
+class Component extends DCLogic {
+  state = {tab:'market', posture:null, domain:'All', density:null, sel:0, booked:{}, query:'', flash:null, mocks:1284, online:312, newOpen:false};
+
+  componentDidMount(){
+    this.searchRef = React.createRef();
+    this._key = e => this.onKey(e);
+    document.addEventListener('keydown', this._key);
+    this._tick = setInterval(() => this.setState(s => ({mocks: s.mocks + 1, online: 296 + Math.floor(Math.random()*26)})), 3800);
+    this.forceUpdate();
+  }
+  componentWillUnmount(){ document.removeEventListener('keydown', this._key); clearInterval(this._tick); }
+
+  posture(){ return this.state.posture || this.props.defaultPosture || 'give'; }
+  density(){ return this.state.density || this.props.defaultDensity || 'cards'; }
+
+  pool(){
+    const base = this.posture() === 'give' ? GIVE : SEEK;
+    const q = this.state.query.trim().toLowerCase();
+    return base.filter(x => (this.state.domain === 'All' || x.domain === this.state.domain || x.tags.indexOf(this.state.domain) >= 0))
+               .filter(x => !q || (x.name + ' ' + x.role + ' ' + x.headline + ' ' + x.tags.join(' ')).toLowerCase().indexOf(q) >= 0);
+  }
+
+  onKey(e){
+    const tag = (e.target && e.target.tagName) || '';
+    const typing = tag === 'INPUT' || tag === 'TEXTAREA';
+    if (e.key === 'Escape'){ if (typing && e.target.blur) e.target.blur(); this.setState({newOpen:false}); return; }
+    if (typing) return;
+    const k = e.key.toLowerCase();
+    const list = this.pool();
+    if (k === '/'){ e.preventDefault(); if (this.searchRef && this.searchRef.current) this.searchRef.current.focus(); return; }
+    if (k === '1'){ this.setState({tab:'market'}); return; }
+    if (k === '2'){ this.setState({tab:'sessions'}); return; }
+    if (k === '3'){ this.setState({tab:'profile'}); return; }
+    if (k === 'n'){ this.setState({newOpen:true}); return; }
+    if (this.state.tab !== 'market') return;
+    if (k === 'v'){ this.setState({density: this.density() === 'cards' ? 'list' : 'cards'}); return; }
+    if (k === 'j'){ e.preventDefault(); this.setState(s => ({sel: Math.min(list.length - 1, s.sel + 1)})); return; }
+    if (k === 'k'){ e.preventDefault(); this.setState(s => ({sel: Math.max(0, s.sel - 1)})); return; }
+    if (k === 'b'){ const it = list[Math.min(this.state.sel, list.length - 1)]; if (it) this.book(it.id); }
+  }
+
+  book(id){
+    this.setState(s => {
+      const booked = Object.assign({}, s.booked); booked[id] = true;
+      return {booked, flash:id};
+    });
+    clearTimeout(this._flashT);
+    this._flashT = setTimeout(() => this.setState({flash:null}), 420);
+  }
+
+  renderVals(){
+    const accent = this.props.accent || '#3e8bff';
+    const tab = this.state.tab, posture = this.posture(), density = this.density();
+    const list = this.pool();
+    const sel = Math.min(this.state.sel, Math.max(0, list.length - 1));
+    const tabStyle = name => ({
+      ['tabBg' + name]: tab === name.toLowerCase().replace('marketplace','market') ? 'rgba(255,255,255,0.07)' : 'transparent'
+    });
+    const on = (cond) => cond ? 'rgba(255,255,255,0.07)' : 'transparent';
+    const fg = (cond) => cond ? '#F2F4F8' : '#878D99';
+
+    const slots = list.map((x, i) => {
+      const isSel = i === sel;
+      const isBooked = !!this.state.booked[x.id];
+      const giving = posture === 'give';
+      return Object.assign({}, x, {
+        select: () => this.setState({sel:i}),
+        book: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.book(x.id); },
+        bc: isSel ? 'color-mix(in srgb, ' + accent + ' 55%, transparent)' : 'rgba(255,255,255,0.08)',
+        shadow: isSel
+          ? 'inset 0 1px 0 rgba(255,255,255,0.05), 0 0 0 1px color-mix(in srgb, ' + accent + ' 22%, transparent), 0 14px 40px color-mix(in srgb, ' + accent + ' 14%, transparent)'
+          : 'inset 0 1px 0 rgba(255,255,255,0.045)',
+        rowBg: isSel ? 'color-mix(in srgb, ' + accent + ' 9%, transparent)' : 'transparent',
+        rowRail: isSel ? 'inset 2px 0 0 ' + accent : 'none',
+        anim: this.state.flash === x.id ? 'pm-press .32s ease' : 'none',
+        cta: isBooked ? 'Booked · invite sent' : (giving ? 'Instant Book' : 'Offer to Interview'),
+        ctaShort: isBooked ? 'Booked' : (giving ? 'Book' : 'Offer'),
+        ctaBg: isBooked ? 'rgba(52,211,153,.12)' : 'color-mix(in srgb, ' + accent + ' 12%, transparent)',
+        ctaBorder: isBooked ? 'rgba(52,211,153,.4)' : 'color-mix(in srgb, ' + accent + ' 50%, transparent)',
+        ctaFg: isBooked ? '#6EE7B7' : '#cfe0ff'
+      });
+    });
+
+    const counts = {};
+    DOMAINS.forEach(d => {
+      const base = posture === 'give' ? GIVE : SEEK;
+      counts[d] = d === 'All' ? base.length : base.filter(x => x.domain === d || x.tags.indexOf(d) >= 0).length;
+    });
+
+    const sessions = [
+      {when:'Today 6:00 PM', peer:'Lena Fischer', role:'Candidate', focus:'React internals', status:'Confirmed'},
+      {when:'Tomorrow 7:30 PM', peer:'Tomas Novak', role:'Interviewer', focus:'Systems design', status:'Confirmed'},
+      {when:'Sat 11:00 AM', peer:'Grace Lin', role:'Interviewer', focus:'Behavioral', status:'Awaiting peer'},
+      {when:'Wed, ended', peer:'Marco Silva', role:'Candidate', focus:'DSA hard set', status:'Feedback due'}
+    ].map(x => ({
+      when:x.when, peer:x.peer, role:x.role, focus:x.focus, status:x.status,
+      roleFg: x.role === 'Interviewer' ? '#cfe0ff' : '#9FA6B3',
+      statusBg: x.status === 'Confirmed' ? 'rgba(52,211,153,.1)' : x.status === 'Feedback due' ? 'color-mix(in srgb, ' + accent + ' 12%, transparent)' : 'transparent',
+      statusBc: x.status === 'Confirmed' ? 'rgba(52,211,153,.28)' : x.status === 'Feedback due' ? 'color-mix(in srgb, ' + accent + ' 40%, transparent)' : 'rgba(255,255,255,0.08)',
+      statusFg: x.status === 'Confirmed' ? '#6EE7B7' : x.status === 'Feedback due' ? '#cfe0ff' : '#878D99'
+    }));
+
+    return {
+      accent,
+      isMarket: tab === 'market', isSessions: tab === 'sessions', isProfile: tab === 'profile',
+      isCards: density === 'cards', isList: density === 'list',
+      goMarket: () => this.setState({tab:'market'}),
+      goSessions: () => this.setState({tab:'sessions'}),
+      goProfile: () => this.setState({tab:'profile'}),
+      tabBgMarket: on(tab === 'market'), tabFgMarket: fg(tab === 'market'),
+      tabBgSessions: on(tab === 'sessions'), tabFgSessions: fg(tab === 'sessions'),
+      tabBgProfile: on(tab === 'profile'), tabFgProfile: fg(tab === 'profile'),
+      setGive: () => this.setState({posture:'give', sel:0}),
+      setSeek: () => this.setState({posture:'seek', sel:0}),
+      postureBgGive: on(posture === 'give'), postureFgGive: fg(posture === 'give'),
+      postureBgSeek: on(posture === 'seek'), postureFgSeek: fg(posture === 'seek'),
+      setCards: () => this.setState({density:'cards'}),
+      setList: () => this.setState({density:'list'}),
+      densBgCards: on(density === 'cards'), densFgCards: fg(density === 'cards'),
+      densBgList: on(density === 'list'), densFgList: fg(density === 'list'),
+      domains: DOMAINS.map(d => ({
+        label: d, count: counts[d], pick: () => this.setState({domain:d, sel:0}),
+        bc: this.state.domain === d ? 'color-mix(in srgb, ' + accent + ' 50%, transparent)' : 'rgba(255,255,255,0.08)',
+        bg: this.state.domain === d ? 'color-mix(in srgb, ' + accent + ' 11%, transparent)' : '#0C0E13',
+        fg: this.state.domain === d ? '#cfe0ff' : '#9FA6B3'
+      })),
+      giveBc: posture === 'give' ? 'color-mix(in srgb, ' + accent + ' 50%, transparent)' : 'transparent',
+      giveShadow: posture === 'give' ? '0 0 0 1px color-mix(in srgb, ' + accent + ' 18%, transparent), 0 8px 22px color-mix(in srgb, ' + accent + ' 16%, transparent)' : 'none',
+      giveIcon: posture === 'give' ? '#cfe0ff' : '#6A707B',
+      giveCount: GIVE.length,
+      giveBadgeBg: posture === 'give' ? 'color-mix(in srgb, ' + accent + ' 18%, transparent)' : '#12151C',
+      giveBadgeBc: posture === 'give' ? 'color-mix(in srgb, ' + accent + ' 45%, transparent)' : 'rgba(255,255,255,0.08)',
+      giveBadgeFg: posture === 'give' ? '#dbe8ff' : '#6A707B',
+      seekBc: posture === 'seek' ? 'rgba(52,211,153,.45)' : 'transparent',
+      seekShadow: posture === 'seek' ? '0 0 0 1px rgba(52,211,153,.18), 0 8px 22px rgba(52,211,153,.14)' : 'none',
+      seekIcon: posture === 'seek' ? '#6EE7B7' : '#6A707B',
+      seekCount: SEEK.length,
+      seekBadgeBg: posture === 'seek' ? 'rgba(52,211,153,.16)' : '#12151C',
+      seekBadgeBc: posture === 'seek' ? 'rgba(52,211,153,.4)' : 'rgba(255,255,255,0.08)',
+      seekBadgeFg: posture === 'seek' ? '#8FF0C6' : '#6A707B',
+      slots, sessions,
+      searchRef: this.searchRef,
+      query: this.state.query,
+      onQuery: e => this.setState({query: e.target.value, sel:0}),
+      listTitle: posture === 'give' ? 'Evaluators giving interviews' : 'Peers seeking interviews',
+      countLabel: list.length + ' of ' + (posture === 'give' ? GIVE.length : SEEK.length),
+      mocks: this.state.mocks.toLocaleString('en-US'),
+      online: this.state.online,
+      selLabel: list.length ? (sel + 1) + ' / ' + list.length + ' selected' : 'no matches',
+      hintDisplay: (this.props.showShortcutBar === false) ? 'none' : 'block',
+      openNew: () => this.setState({newOpen:true}),
+      closeNew: () => this.setState({newOpen:false}),
+      stop: e => e.stopPropagation(),
+      newOpen: this.state.newOpen
+    };
+  }
+}
+</script>
+</body>
+</html>
