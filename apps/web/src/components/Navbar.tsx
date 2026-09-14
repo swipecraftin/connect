@@ -41,7 +41,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   mySessionsCount,
   profile,
   user,
-  onSignInGoogle,
+  onSignInGoogle: _onSignInGoogle,
   onSignOut,
   isConfigured,
   onOpenTrustHub,
@@ -137,7 +137,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     : 'text-[#878D99] hover:text-[#E8EAF0] hover:bg-white/[0.04] border border-transparent'
                 }`}
               >
-                <span>Profile</span>
+                <span>{user ? 'Profile' : 'Sign In'}</span>
               </button>
             </nav>
           </div>
@@ -164,8 +164,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               </button>
             )}
 
-            {/* In-App Notification Center Popover */}
-            <NotificationPopover onNavigateTab={onNavigateTab || setActiveTab} />
+            {/* In-App Notification Center Popover — only rendered when logged in */}
+            {user && (
+              <NotificationPopover onNavigateTab={onNavigateTab || setActiveTab} />
+            )}
 
             {/* Help & Trust Hub Button */}
             {onOpenTrustHub && (
@@ -233,7 +235,12 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
             ) : (
               <div className="pl-1.5 sm:pl-2 border-l border-white/[0.08] flex items-center gap-1.5">
-                <Button size="sm" variant="outline" onClick={onSignInGoogle} className="gap-1.5 text-xs font-bold h-8 rounded-[8px] border-white/[0.12] bg-white/[0.03] backdrop-blur-md text-[#E8EAF0] hover:bg-white/[0.07] px-2.5">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setActiveTab('profile')}
+                  className="gap-1.5 text-xs font-bold h-8 rounded-[8px] border-white/[0.12] bg-white/[0.03] backdrop-blur-md text-[#E8EAF0] hover:bg-white/[0.07] px-2.5"
+                >
                   <LogIn className="h-3.5 w-3.5" />
                   <span>Sign In</span>
                 </Button>
@@ -293,8 +300,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               : 'text-[#878D99] hover:text-[#E8EAF0]'
           }`}
         >
-          <UserIcon className="w-4 h-4" />
-          <span className="text-[10px] font-medium tracking-tight">Profile</span>
+          {user ? <UserIcon className="w-4 h-4" /> : <LogIn className="w-4 h-4" />}
+          <span className="text-[10px] font-medium tracking-tight">{user ? 'Profile' : 'Sign In'}</span>
         </button>
       </nav>
     </>

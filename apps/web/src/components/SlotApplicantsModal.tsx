@@ -189,7 +189,7 @@ export const SlotApplicantsModal: React.FC<SlotApplicantsModalProps> = ({
                   target_companies: 'Meta, Google, Stripe',
                   created_at: req.created_at,
                 };
-                const appName = app?.full_name || 'Anonymous Peer';
+                const appName = app?.full_name || 'Peer Candidate';
                 const appInitials = getInitials(appName);
                 const appRel = app?.reliability_score || 100;
                 const appHeadline = app?.headline || 'Tech Candidate';

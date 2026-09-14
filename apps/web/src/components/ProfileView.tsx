@@ -253,7 +253,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
     return (name.slice(0, 2) || 'PM').toUpperCase();
   };
 
-  const nameDisplay = fullName || profile?.full_name || 'Anonymous Peer';
+  const nameDisplay = fullName || profile?.full_name || profile?.email?.split('@')[0] || 'Peer Member';
   const initials = getInitials(nameDisplay);
   const headlineDisplay = headline || profile?.headline || 'Software Engineer · Seeking and Giving Mocks';
   const reliability = Number(profile?.reliability_score ?? 100);

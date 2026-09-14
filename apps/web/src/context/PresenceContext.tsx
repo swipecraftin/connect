@@ -58,7 +58,7 @@ export const PresenceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           await channel.track({
             online_at: new Date().toISOString(),
             user_id: currentId,
-            full_name: profile?.full_name || 'Anonymous Peer',
+            full_name: profile?.full_name || user?.email?.split('@')[0] || 'Peer Member',
           });
         }
       });

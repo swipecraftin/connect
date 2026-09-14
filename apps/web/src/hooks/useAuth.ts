@@ -16,24 +16,8 @@ export function useAuth() {
           setProfile(parsed);
           setUser({ id: parsed.id, email: parsed.email });
         } else {
-          const defaultProfile: Profile = {
-            id: 'dev-user-host',
-            email: 'swipecraft.in@gmail.com',
-            full_name: 'Satya Kiran',
-            headline: 'Full Stack Engineer · PeerMock',
-            primary_domain: 'Systems Design',
-            skills_tags: ['Systems Design', 'Backend', 'Distributed Systems'],
-            years_of_experience: 'Senior (6-9y)',
-            reliability_score: 100,
-            total_sessions_completed: 6,
-            no_show_count: 0,
-            karma_score: 385,
-            onboarding_completed: true,
-            created_at: new Date().toISOString(),
-          };
-          setProfile(defaultProfile);
-          setUser({ id: defaultProfile.id, email: defaultProfile.email });
-          localStorage.setItem('peermock_profile', JSON.stringify(defaultProfile));
+          setProfile(null);
+          setUser(null);
         }
       } catch {}
       setLoading(false);

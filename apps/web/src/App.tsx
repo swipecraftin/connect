@@ -5,6 +5,7 @@ import { Navbar } from './components/Navbar';
 import { MarketplaceView } from './components/MarketplaceView';
 import { MySessionsView } from './components/MySessionsView';
 import { ProfileView } from './components/ProfileView';
+import { LoginPage } from './components/LoginPage';
 import { CreateSlotModal } from './components/CreateSlotModal';
 import { ReviewModal } from './components/ReviewModal';
 import { TrustHubModal, TrustTab } from './components/TrustHubModal';
@@ -625,14 +626,9 @@ function MainApp() {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         onNavigateTab={handleNavigateTab}
-        onOpenCreateSlot={async () => {
+        onOpenCreateSlot={() => {
           if (!currentUserId) {
-            await showAlert({
-              title: 'Sign In Required',
-              message: 'Please sign in with Google to host a practice session.',
-              type: 'info',
-            });
-            signInWithGoogle();
+            setActiveTab('profile');
             return;
           }
           setIsCreateModalOpen(true);
@@ -681,77 +677,86 @@ function MainApp() {
             onOpenTimezoneModal={() => setIsTimezoneModalOpen(true)}
             onPublishSlot={async () => {
               if (!currentUserId) {
-                await showAlert({
-                  title: 'Sign In Required',
-                  message: 'Please sign in with Google to host a practice session.',
-                  type: 'info',
-                });
-                signInWithGoogle();
+                setActiveTab('profile');
                 return;
               }
               setIsCreateModalOpen(true);
             }}
           />
         ) : activeTab === 'my-sessions' ? (
-          <MySessionsView
-            allSlots={slots}
-            requests={requests}
-            bookedSlotIds={bookedSlotIds}
-            syncedCalendarSlotIds={syncedCalendarSlotIds}
-            currentUserId={currentUserId}
-            onOpenReview={(slot) => setReviewModalSlot(slot)}
-            onReviewApplicants={(slot) => setReviewingApplicantsSlot(slot)}
-            onCancelSlot={async (slot) => {
-              if (slot.status === 'open') {
-                const confirmed = await showConfirm({
-                  title: 'Delete Practice Slot',
-                  message: `Permanently remove "${slot.topic_title}" from the marketplace?`,
-                  confirmText: 'Delete Listing',
-                  type: 'warning',
-                });
-                if (confirmed) {
-                  try {
-                    await deleteSlot(slot.id);
-                    addNotification({
-                      title: 'Practice Slot Removed',
-                      message: `Your mock session "${slot.topic_title}" was deleted from the marketplace.`,
-                      type: 'cancellation',
-                      actionTab: 'marketplace',
-                    });
-                    await showAlert({
-                      title: 'Listing Deleted',
-                      message: 'Your mock practice slot has been deleted from the marketplace.',
-                      type: 'info',
-                    });
-                  } catch (err: any) {
-                    await showAlert({
-                      title: 'Error Deleting Slot',
-                      message: err.message || 'Error deleting slot',
-                      type: 'danger',
-                    });
+          !user ? (
+            <LoginPage
+              onSignInGoogle={signInWithGoogle}
+              onExploreMarketplace={() => setActiveTab('marketplace')}
+            />
+          ) : (
+            <MySessionsView
+              allSlots={slots}
+              requests={requests}
+              bookedSlotIds={bookedSlotIds}
+              syncedCalendarSlotIds={syncedCalendarSlotIds}
+              currentUserId={currentUserId}
+              onOpenReview={(slot) => setReviewModalSlot(slot)}
+              onReviewApplicants={(slot) => setReviewingApplicantsSlot(slot)}
+              onCancelSlot={async (slot) => {
+                if (slot.status === 'open') {
+                  const confirmed = await showConfirm({
+                    title: 'Delete Practice Slot',
+                    message: `Permanently remove "${slot.topic_title}" from the marketplace?`,
+                    confirmText: 'Delete Listing',
+                    type: 'warning',
+                  });
+                  if (confirmed) {
+                    try {
+                      await deleteSlot(slot.id);
+                      addNotification({
+                        title: 'Practice Slot Removed',
+                        message: `Your mock session "${slot.topic_title}" was deleted from the marketplace.`,
+                        type: 'cancellation',
+                        actionTab: 'marketplace',
+                      });
+                      await showAlert({
+                        title: 'Listing Deleted',
+                        message: 'Your mock practice slot has been deleted from the marketplace.',
+                        type: 'info',
+                      });
+                    } catch (err: any) {
+                      await showAlert({
+                        title: 'Error Deleting Slot',
+                        message: err.message || 'Error deleting slot',
+                        type: 'danger',
+                      });
+                    }
                   }
+                  return;
                 }
-                return;
-              }
-              setCancellingModalSlot(slot);
-            }}
-            onWithdrawRequest={handleWithdrawRequest}
-          />
+                setCancellingModalSlot(slot);
+              }}
+              onWithdrawRequest={handleWithdrawRequest}
+            />
+          )
         ) : (
-          <ProfileView
-            profile={profile}
-            slots={slots}
-            onUpdateProfile={async (updates) => {
-              await updateProfile(updates);
-              addNotification({
-                title: 'Profile Updated',
-                message: 'Your technical profile calibration has been saved.',
-                type: 'system',
-                actionTab: 'profile',
-              });
-            }}
-            onNavigateToMarketplace={() => setActiveTab('marketplace')}
-          />
+          !user ? (
+            <LoginPage
+              onSignInGoogle={signInWithGoogle}
+              onExploreMarketplace={() => setActiveTab('marketplace')}
+            />
+          ) : (
+            <ProfileView
+              profile={profile}
+              slots={slots}
+              onUpdateProfile={async (updates) => {
+                await updateProfile(updates);
+                addNotification({
+                  title: 'Profile Updated',
+                  message: 'Your technical profile calibration has been saved.',
+                  type: 'system',
+                  actionTab: 'profile',
+                });
+              }}
+              onNavigateToMarketplace={() => setActiveTab('marketplace')}
+            />
+          )
         )}
       </main>
 
