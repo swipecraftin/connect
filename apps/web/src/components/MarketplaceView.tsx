@@ -189,17 +189,6 @@ export const MarketplaceView: React.FC<MarketplaceViewProps> = ({
       <section className="relative overflow-hidden pt-4 pb-8 sm:pt-8 sm:pb-12 border-0 bg-transparent">
         <div className="absolute -top-[60px] -right-[40px] w-[460px] h-[320px] bg-[radial-gradient(closest-side,rgba(62,139,255,0.2),transparent)] pointer-events-none" />
         <div className="relative flex flex-col gap-5 sm:gap-6 max-w-[820px]">
-          {/* Tagline Pill */}
-          <div className="inline-flex items-center gap-2.5 self-start py-1.5 px-4 border border-white/[0.1] rounded-full bg-white/[0.03] backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#34D399] shadow-[0_0_8px_rgba(52,211,153,0.7)]" />
-            <span className="font-mono text-[11.5px] font-medium text-[#E8EAF0] tracking-wide">
-              100% Free Public Software
-            </span>
-            <span className="text-white/20 text-[10px]">/</span>
-            <span className="font-mono text-[11.5px] text-[#34D399] font-semibold">
-              Zero Paywalls · Zero Ads
-            </span>
-          </div>
 
           {/* Headline */}
           <h1 className="m-0 font-extrabold text-3xl sm:text-[46px] lg:text-[54px] leading-[1.08] tracking-[-0.035em] text-[#F2F4F8] text-balance">
@@ -354,8 +343,8 @@ export const MarketplaceView: React.FC<MarketplaceViewProps> = ({
         </div>
 
         {/* Domain Filter Pills Strip */}
-        <div className="flex items-center justify-between gap-3 pt-1">
-          <div className="flex items-center gap-2 overflow-x-auto pb-1">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pt-1">
+          <div className="flex items-center gap-2 overflow-x-auto min-w-0 flex-1 pb-1.5 scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             {DOMAINS.map((domain) => {
               const isSelected = selectedDomain === domain;
               const count = domainCounts[domain] ?? 0;
@@ -366,7 +355,7 @@ export const MarketplaceView: React.FC<MarketplaceViewProps> = ({
                     setSelectedDomain(domain);
                     setSelectedIndex(0);
                   }}
-                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-medium transition-all shrink-0 ${
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-medium transition-all shrink-0 whitespace-nowrap select-none ${
                     isSelected
                       ? 'border-[#3e8bff]/50 bg-[#3e8bff]/15 text-[#cfe0ff] shadow-xs font-semibold'
                       : 'border-white/[0.06] bg-white/[0.02] text-[#8A8F9C] hover:text-[#E8EAF0] hover:bg-white/[0.05]'
@@ -385,11 +374,11 @@ export const MarketplaceView: React.FC<MarketplaceViewProps> = ({
             })}
           </div>
 
-          <div className="flex items-center gap-3 shrink-0 select-none">
+          <div className="flex items-center gap-3 shrink-0 self-end md:self-auto select-none pt-0.5">
             {onOpenTimezoneModal && (
               <button
                 onClick={onOpenTimezoneModal}
-                className="inline-flex items-center gap-1.5 text-[11px] font-mono text-[#8A8F9C] hover:text-[#E8EAF0] px-3 py-1.5 rounded-lg border border-white/[0.08] bg-white/[0.03] backdrop-blur-md hover:bg-white/[0.06] transition-colors"
+                className="inline-flex items-center gap-1.5 text-[11px] font-mono text-[#8A8F9C] hover:text-[#E8EAF0] px-3 py-1.5 rounded-lg border border-white/[0.08] bg-white/[0.03] backdrop-blur-md hover:bg-white/[0.06] transition-colors whitespace-nowrap shrink-0"
                 title={`Active Timezone: ${timeZone} (${timeZoneOffset}). Click to change.`}
               >
                 <Globe className="w-3.5 h-3.5 text-[#3e8bff] stroke-[1.75]" />
@@ -398,7 +387,7 @@ export const MarketplaceView: React.FC<MarketplaceViewProps> = ({
               </button>
             )}
 
-            <label className="flex items-center gap-1.5 text-[11px] font-medium text-[#8A8F9C] hover:text-[#E8EAF0] cursor-pointer">
+            <label className="flex items-center gap-1.5 text-[11px] font-medium text-[#8A8F9C] hover:text-[#E8EAF0] cursor-pointer whitespace-nowrap shrink-0">
               <input
                 type="checkbox"
                 checked={showExpired}
