@@ -39,5 +39,7 @@ Thumbs.db
 .cursor/
 .gemini/
 
-# Internal / Scratch Scripts
+# Internal / Scratch Scripts & Configs
 scripts/
+.mcp.json
+*.tsbuildinfo
