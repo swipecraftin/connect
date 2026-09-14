@@ -64,7 +64,7 @@ export const PresenceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       });
 
     return () => {
-      channel.unsubscribe();
+      supabase.removeChannel(channel);
     };
   }, [user?.id, profile?.id, profile?.full_name]);
 

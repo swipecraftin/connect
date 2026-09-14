@@ -31,27 +31,35 @@ export function useSlots() {
   useEffect(() => {
     if (!isSupabaseConfigured) return;
 
-    const channel = supabase
-      .channel('public:slots_and_requests')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'slots' },
-        () => {
-          queryClient.invalidateQueries({ queryKey: ['slots'] });
-        }
-      )
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'slot_requests' },
-        () => {
-          queryClient.invalidateQueries({ queryKey: ['slot_requests'] });
-          queryClient.invalidateQueries({ queryKey: ['slots'] });
-        }
-      )
-      .subscribe();
+    let channel: any = null;
+    try {
+      const channelName = `slots-sync-${Math.random().toString(36).substring(2, 9)}`;
+      channel = supabase
+        .channel(channelName)
+        .on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table: 'slots' },
+          () => {
+            queryClient.invalidateQueries({ queryKey: ['slots'] });
+          }
+        )
+        .on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table: 'slot_requests' },
+          () => {
+            queryClient.invalidateQueries({ queryKey: ['slot_requests'] });
+            queryClient.invalidateQueries({ queryKey: ['slots'] });
+          }
+        )
+        .subscribe();
+    } catch (err) {
+      console.warn('Realtime slots sync registration warning:', err);
+    }
 
     return () => {
-      supabase.removeChannel(channel);
+      if (channel) {
+        supabase.removeChannel(channel);
+      }
     };
   }, [queryClient]);
 

@@ -80,83 +80,94 @@ function MainApp() {
   useEffect(() => {
     if (!isSupabaseConfigured) return;
 
-    const channel = supabase.channel('room:session-events');
-    channel
-      .on(
-        'broadcast',
-        { event: 'session_cancelled' },
-        (response: { payload: PeerCancellationData & { targetUserId: string; slotId: string } }) => {
-          const { targetUserId, slotId, ...data } = response.payload;
-          if (targetUserId && currentUserId && targetUserId === currentUserId) {
-            setPeerCancellationAlert(data);
-            queryClient.invalidateQueries({ queryKey: ['slots'] });
-            queryClient.invalidateQueries({ queryKey: ['slot_requests'] });
-            setBookedSlotIds((prev) => prev.filter((id) => id !== slotId));
-            addNotification({
-              title: 'Session Cancelled by Partner',
-              message: `${data.cancellingUserName} was unable to attend and cancelled "${data.topicTitle}".`,
-              type: 'cancellation',
-              actionTab: 'marketplace',
-            });
-          }
-        }
-      )
-      .subscribe();
+    let channel: any = null;
+    let reqChannel: any = null;
 
-    // In-app notifications listener for applicant requests
-    const reqChannel = supabase
-      .channel('public:slot_requests_alerts')
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'slot_requests' },
-        (payload) => {
-          const newReq = payload.new as any;
-          if (newReq && currentUserId) {
-            const targetSlot = slots.find((s) => s.id === newReq.slot_id);
-            if (targetSlot && targetSlot.creator_id === currentUserId && newReq.applicant_id !== currentUserId) {
+    try {
+      channel = supabase.channel('room:session-events');
+      channel
+        .on(
+          'broadcast',
+          { event: 'session_cancelled' },
+          (response: { payload: PeerCancellationData & { targetUserId: string; slotId: string } }) => {
+            const { targetUserId, slotId, ...data } = response.payload;
+            if (targetUserId && currentUserId && targetUserId === currentUserId) {
+              setPeerCancellationAlert(data);
+              queryClient.invalidateQueries({ queryKey: ['slots'] });
+              queryClient.invalidateQueries({ queryKey: ['slot_requests'] });
+              setBookedSlotIds((prev) => prev.filter((id) => id !== slotId));
               addNotification({
-                title: 'New Candidate Applied!',
-                message: `A peer applied to join "${targetSlot.topic_title}". Click to review their profile and accept.`,
-                type: 'booking',
-                actionTab: 'my-sessions',
-                slotId: targetSlot.id,
-              });
-            }
-          }
-        }
-      )
-      .on(
-        'postgres_changes',
-        { event: 'UPDATE', schema: 'public', table: 'slot_requests' },
-        (payload) => {
-          const updatedReq = payload.new as any;
-          if (updatedReq && currentUserId && updatedReq.applicant_id === currentUserId) {
-            const targetSlot = slots.find((s) => s.id === updatedReq.slot_id);
-            const topic = targetSlot?.topic_title || 'session';
-            if (updatedReq.status === 'accepted') {
-              addNotification({
-                title: 'Application Accepted!',
-                message: `Your request for "${topic}" was accepted! Google Meet room & calendar scheduled.`,
-                type: 'booking',
-                actionTab: 'my-sessions',
-                slotId: updatedReq.slot_id,
-              });
-            } else if (updatedReq.status === 'rejected' || updatedReq.status === 'declined') {
-              addNotification({
-                title: 'Application Update',
-                message: `Host was unable to accommodate your application for "${topic}". Explore other open slots!`,
+                title: 'Session Cancelled by Partner',
+                message: `${data.cancellingUserName} was unable to attend and cancelled "${data.topicTitle}".`,
                 type: 'cancellation',
                 actionTab: 'marketplace',
               });
             }
           }
-        }
-      )
-      .subscribe();
+        )
+        .subscribe();
+    } catch (err) {
+      console.warn('Realtime session-events warning:', err);
+    }
+
+    try {
+      const reqChannelName = `slot-req-alerts-${Math.random().toString(36).substring(2, 9)}`;
+      reqChannel = supabase
+        .channel(reqChannelName)
+        .on(
+          'postgres_changes',
+          { event: 'INSERT', schema: 'public', table: 'slot_requests' },
+          (payload) => {
+            const newReq = payload.new as any;
+            if (newReq && currentUserId) {
+              const targetSlot = slots.find((s) => s.id === newReq.slot_id);
+              if (targetSlot && targetSlot.creator_id === currentUserId && newReq.applicant_id !== currentUserId) {
+                addNotification({
+                  title: 'New Candidate Applied!',
+                  message: `A peer applied to join "${targetSlot.topic_title}". Click to review their profile and accept.`,
+                  type: 'booking',
+                  actionTab: 'my-sessions',
+                  slotId: targetSlot.id,
+                });
+              }
+            }
+          }
+        )
+        .on(
+          'postgres_changes',
+          { event: 'UPDATE', schema: 'public', table: 'slot_requests' },
+          (payload) => {
+            const updatedReq = payload.new as any;
+            if (updatedReq && currentUserId && updatedReq.applicant_id === currentUserId) {
+              const targetSlot = slots.find((s) => s.id === updatedReq.slot_id);
+              const topic = targetSlot?.topic_title || 'session';
+              if (updatedReq.status === 'accepted') {
+                addNotification({
+                  title: 'Application Accepted!',
+                  message: `Your request for "${topic}" was accepted! Google Meet room & calendar scheduled.`,
+                  type: 'booking',
+                  actionTab: 'my-sessions',
+                  slotId: updatedReq.slot_id,
+                });
+              } else if (updatedReq.status === 'rejected' || updatedReq.status === 'declined') {
+                addNotification({
+                  title: 'Application Update',
+                  message: `Host was unable to accommodate your application for "${topic}". Explore other open slots!`,
+                  type: 'cancellation',
+                  actionTab: 'marketplace',
+                });
+              }
+            }
+          }
+        )
+        .subscribe();
+    } catch (err) {
+      console.warn('Realtime slot_requests_alerts warning:', err);
+    }
 
     return () => {
-      supabase.removeChannel(channel);
-      supabase.removeChannel(reqChannel);
+      if (channel) supabase.removeChannel(channel);
+      if (reqChannel) supabase.removeChannel(reqChannel);
     };
   }, [currentUserId, slots]);
 
